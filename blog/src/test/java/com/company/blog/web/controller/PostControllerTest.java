@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PostController.class)
-public class PostControllerTest {
+class PostControllerTest {
     private final String URL = "/post";
     @Autowired
     private MockMvc mockMvc;
@@ -33,7 +33,7 @@ public class PostControllerTest {
     private PostService service;
 
     @Test
-    void testFindAllProducts() throws Exception {
+    void testFindAllPosts() throws Exception {
         List<Post> postList = createPostList(createPost());
 
         when(service.findAllPosts()).thenReturn(postList);
@@ -51,7 +51,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testFindAllProductsInvalid() throws Exception {
+    void testFindAllPostsInvalid() throws Exception {
         List<Post> postList = new ArrayList<>();
 
         when(service.findAllPosts()).thenReturn(postList);
@@ -67,10 +67,10 @@ public class PostControllerTest {
     }
 
     @Test
-    void testFindProductById() throws Exception {
-        Optional<Post> product = Optional.of(createPost());
+    void testFindPostById() throws Exception {
+        Optional<Post> post = Optional.of(createPost());
 
-        when(service.findPostByID(anyLong())).thenReturn(product);
+        when(service.findPostByID(anyLong())).thenReturn(post);
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/1"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -84,15 +84,15 @@ public class PostControllerTest {
     }
 
     @Test
-    void testFindProductByIdInvalid() throws Exception {
-        Optional<Post> product = Optional.of(createPost());
-        product.get().setId(null);
+    void testFindPostByIdInvalid() throws Exception {
+        Optional<Post> post = Optional.of(createPost());
+        post.get().setId(null);
 
         when(service.findPostByID(null)).thenReturn(Optional.empty());
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get(URL + null)
-                        .content(asJsonString(product))
+                        .content(asJsonString(post))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -101,7 +101,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testSaveProduct() throws Exception {
+    void testSavePost() throws Exception {
         Post post = createPost();
         post.setId(null);
 
@@ -118,7 +118,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testSaveProductInvalid() throws Exception {
+    void testSavePostInvalid() throws Exception {
         Post post = createPost();
         post.setAuthor("");
 
@@ -135,7 +135,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testUpdateProductById() throws Exception {
+    void testUpdatePostById() throws Exception {
         Post post = createPost();
 
         when(service.findPostByID(post.getId())).thenReturn(Optional.of(post));
@@ -152,7 +152,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testUpdateProductByIdInvalid() throws Exception {
+    void testUpdatePostByIdInvalid() throws Exception {
         Post post = createPost();
         post.setId(null);
 
@@ -169,14 +169,14 @@ public class PostControllerTest {
     }
 
     @Test
-    void testDeleteProduct() throws Exception {
-        Optional<Post> product = Optional.of(createPost());
+    void testDeletePost() throws Exception {
+        Optional<Post> post = Optional.of(createPost());
 
-        when(service.findPostByID(anyLong())).thenReturn(product);
+        when(service.findPostByID(anyLong())).thenReturn(post);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete(URL + "/1")
-                        .content(asJsonString(product))
+                        .content(asJsonString(post))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -185,15 +185,15 @@ public class PostControllerTest {
     }
 
     @Test
-    void testDeleteProductInvalid() throws Exception {
-        Optional<Post> product = Optional.of(createPost());
-        product.get().setId(null);
+    void testDeletePostInvalid() throws Exception {
+        Optional<Post> post = Optional.of(createPost());
+        post.get().setId(null);
 
-        when(service.findPostByID(null)).thenReturn(product);
+        when(service.findPostByID(null)).thenReturn(post);
 
         ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .delete(URL + null)
-                        .content(asJsonString(product))
+                        .content(asJsonString(post))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

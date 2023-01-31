@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Optional<Post> findPostByID(Long id) {
         Optional<Post> postByID = postRepository.findById(id)
-                .flatMap(product -> Optional.ofNullable(postMapStructMapper.postDAOToPost(product)));
+                .flatMap(post -> Optional.ofNullable(postMapStructMapper.postDAOToPost(post)));
         log.info("Post with id {} is {}", id, postByID);
         return postByID;
     }
